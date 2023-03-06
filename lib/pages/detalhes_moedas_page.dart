@@ -23,15 +23,13 @@ class _MoedasDetalhesPageState extends State<MoedasDetalhesPage> {
   double quantidade = 0;
 
 
-  comprarmoeda() {
+  late ContaRepository conta;
+
+  comprarmoeda() async {
     if (_form.currentState!.validate()) {
+    final conta = Provider.of<ContaRepository>(context, listen: false);
 
-      final conta = context.read<ContaRepository>();
- var newvalor = conta.saldo - double.parse(_valor.text) ;
- conta.setSaldo(newvalor);
-
-
-print(conta.carteira);
+      await conta.comprar(widget.moeda, double.parse(_valor.text));
 
 
       Navigator.pop(context);
@@ -54,7 +52,7 @@ print(conta.carteira);
   @override
   Widget build(BuildContext context) {
 
-        final conta = context.watch<ContaRepository>();
+        final conta = Provider.of<ContaRepository>(context, listen: false);
          final loc = context.read<AppSettings>().locale;
     NumberFormat real =
         NumberFormat.currency(locale: loc['locale'], name: loc['name']);

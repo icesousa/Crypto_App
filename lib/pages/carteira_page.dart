@@ -85,7 +85,7 @@ if( index == carteira.length){
   graficoLabel = 'Saldo';
   graficoValor  = conta.saldo;
 }else{
-  graficoLabel = carteira[index].moeda.nome;
+  graficoLabel = '${carteira[index].moeda.nome} | ${carteira[index].quantidade.toStringAsFixed(3)}';
   graficoValor = carteira[index].moeda.preco * carteira[index].quantidade;
 }
 
@@ -145,7 +145,15 @@ loadHistorico(){
 
   for(var operacao in historico){
     widgets.add(ListTile(
-    title: Text(operacao.moeda.nome),
+    title: Row(
+      children: [
+        Text(operacao.moeda.nome, style:  const TextStyle(
+          fontWeight: FontWeight.w500
+        ), ),
+        
+        Text(' | ${operacao.quantidade.toStringAsFixed(3)}')
+      ],
+    ),
     subtitle: Text(date.format(operacao.dataOperacao)),
     trailing: Text(real.format(operacao.moeda.preco * operacao.quantidade)
     ),
@@ -155,7 +163,9 @@ loadHistorico(){
     )
     
     );
-        widgets.add(Divider());
+        widgets.add(const Divider(
+          thickness: 1,
+        ));
 
   }
   return Column(
@@ -209,13 +219,13 @@ loadHistorico(){
                 children: [
                   Text(
                     graficoLabel,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 20,
                       color: Colors.teal,
                     ),
                   ),
                   Text(real.format(graficoValor),
-                      style: TextStyle(fontSize: 28, color: Colors.teal))
+                      style: const TextStyle(fontSize: 28, color: Colors.teal))
                 ],
               )
             ],

@@ -93,13 +93,13 @@ class ContaRepository extends ChangeNotifier {
   _getCarteira() async {
     _carteira = [];
     List posicoes = await db.query('carteira');
-    posicoes.forEach((posicao) {
+    for (var posicao in posicoes) {
       Moeda moeda = MoedaRepository.tabela.firstWhere(
         (m) => m.sigla == posicao['sigla'],
       );
       _carteira.add(Posicao(moeda: moeda, quantidade: double.parse(posicao['quantidade'])),
       );
-    });
+    }
   notifyListeners();
   }
 
@@ -109,7 +109,6 @@ class ContaRepository extends ChangeNotifier {
     _historico = [];
     List operacoes = await db.query('historico');
     for (var operacao in operacoes) {
-      print(operacao['data_operacao']);
       Moeda moeda = MoedaRepository.tabela.firstWhere(
         (m) => m.sigla == operacao['sigla'],
       );

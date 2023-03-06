@@ -1,17 +1,21 @@
-# flutter_aula_1
+# Crypto APP
 
-A new Flutter project.
+Este é um aplicativo que permite gerenciar suas criptomoedas.
+Nele é possivel :
+Comprar e vender moedas.
+Visualizar carteira com graficos.
+Adicionar e remover moeda favorita.
+Visualizar lista de favoritas.
+Ver saldo em conta.
+Adicionar Saldo.
 
-## Getting Started
+## Recursos
+O Aplicativo faz uso do pacote de gerenciamento de estados Provider para melhor gerenciamento de telas.
+Utliza  fl_chart para criar graficos para melhor visualização da carteira.
+Utiliza Sqflite e SharedPreferences para armazenamento de dados.
 
-This project is a starting point for a Flutter application.
+-- Integração a API em andamento -- 
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-#Crypto_App
+

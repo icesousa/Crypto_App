@@ -60,6 +60,7 @@ class _CarteiraPageState extends State<CarteiraPage> {
               style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
             ),
             loadGrafico(),
+            loadHistorico(),
           ],
         ),
       ),
@@ -136,6 +137,31 @@ loadCarteira(){
 }
 
 
+
+loadHistorico(){
+  final historico = conta.historico;
+  final date = DateFormat('dd/MM/yyyy - hh:mm');
+  List<Widget> widgets = [];
+
+  for(var operacao in historico){
+    widgets.add(ListTile(
+    title: Text(operacao.moeda.nome),
+    subtitle: Text(date.format(operacao.dataOperacao)),
+    trailing: Text(real.format(operacao.moeda.preco * operacao.quantidade)
+    ),
+    
+
+
+    )
+    
+    );
+        widgets.add(Divider());
+
+  }
+  return Column(
+    children: widgets,
+  );
+}
 
 
 

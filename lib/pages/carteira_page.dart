@@ -24,6 +24,8 @@ class _CarteiraPageState extends State<CarteiraPage> {
   String graficoLabel = '';
   double graficoValor = 0;
   List<Posicao> carteira = [];
+  
+  
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +63,7 @@ class _CarteiraPageState extends State<CarteiraPage> {
             ),
             loadGrafico(),
             loadHistorico(),
+            operacoesButton(),
           ],
         ),
       ),
@@ -136,15 +139,20 @@ loadCarteira(){
 
 }
 
-
+int maxHistorico = 5;
 
 loadHistorico(){
   final historico = conta.historico;
   final date = DateFormat('dd/MM/yyyy - hh:mm');
-  List<Widget> widgets = [];
+    List<Widget> widgets = [];
 
-  for(var operacao in historico){
-    widgets.add(ListTile(
+
+ 
+
+
+for(var i = 0; i < historico.length && i < maxHistorico; i++){
+  var operacao = historico[i];
+      widgets.add(ListTile( 
     title: Row(
       children: [
         Text(operacao.moeda.nome, style:  const TextStyle(
@@ -156,22 +164,34 @@ loadHistorico(){
     ),
     subtitle: Text(date.format(operacao.dataOperacao)),
     trailing: Text(real.format(operacao.moeda.preco * operacao.quantidade)
-    ),
-    
+    )));    
+        widgets.add( const Divider());
 
 
-    )
-    
-    );
-        widgets.add(const Divider(
-          thickness: 1,
-        ));
-
-  }
-  return Column(
-    children: widgets,
-  );
 }
+return Column(children: widgets,);
+
+}
+
+operacoesButton(){
+ final  historico = conta.historico;
+  if(historico.length >5 && maxHistorico <=5) {
+    return TextButton(onPressed: (){
+      setState(() {
+        maxHistorico = historico.length;
+      });
+    }, child: const Text('Ver todas transações', style: TextStyle(fontSize: 18),));
+  }
+  return TextButton(onPressed: (){
+      setState(() {
+        maxHistorico = 5;
+      });
+    }, child: const Text('Ver menos', style: TextStyle(fontSize: 18),),);
+}
+
+  
+
+
 
 
 

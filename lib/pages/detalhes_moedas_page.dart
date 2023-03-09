@@ -17,21 +17,22 @@ class MoedasDetalhesPage extends StatefulWidget {
 }
 
 class _MoedasDetalhesPageState extends State<MoedasDetalhesPage> {
-  NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
-  final _form = GlobalKey<FormState>();
-  final _valor = TextEditingController();
-  double quantidade = 0;
+  late NumberFormat real; 
+  final _form = GlobalKey<FormState>(); //Key global para manipular formulario
+  final _valor = TextEditingController(); // controller dos valores de form
+  double quantidademoeda = 0; //quantidade de moeda comprada
 
 
-  late ContaRepository conta;
+  late ContaRepository conta; // declaração da instancia do ContaRepository
 
+//Método para comprar e exibir uma snackbar na compra.
   comprarmoeda() async {
-    if (_form.currentState!.validate()) {
-    final conta = Provider.of<ContaRepository>(context, listen: false);
+    if (_form.currentState!.validate()) { //se o formulario estiver com os campos validos / validado
+    final conta = Provider.of<ContaRepository>(context, listen: false); //instancia do conta repository
 
-      await conta.comprar(widget.moeda, double.parse(_valor.text));
+      await conta.comprar(widget.moeda, double.parse(_valor.text)); // metodo compra a  ser executado se o formulario estiver valido
 
-
+//Mostra a Snackbar com a quantidade de moedas seguido da sigla + texto
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -39,7 +40,7 @@ class _MoedasDetalhesPageState extends State<MoedasDetalhesPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text( '${quantidade.toStringAsFixed(4)}  ${widget.moeda.sigla} ordem de  compra enviada'),
+              Text( '${quantidademoeda.toStringAsFixed(4)}  ${widget.moeda.sigla} ordem de  compra enviada'),
               const Icon(Icons.check, color: Colors.white,)
             ],
           ),
@@ -50,9 +51,11 @@ class _MoedasDetalhesPageState extends State<MoedasDetalhesPage> {
   }
 
   @override
+  // inicio do build das telas
   Widget build(BuildContext context) {
-
+// instancia do ContaRepository
         final conta = Provider.of<ContaRepository>(context, listen: false);
+         //Definindo o formato do texto para PT/BR OU EN/US
          final loc = context.read<AppSettings>().locale;
     NumberFormat real =
         NumberFormat.currency(locale: loc['locale'], name: loc['name']);
@@ -82,13 +85,13 @@ class _MoedasDetalhesPageState extends State<MoedasDetalhesPage> {
                 ),
               ],
             ),
-            quantidade > 0
+            quantidademoeda > 0
                 ? SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: Container(
                       margin: const EdgeInsets.only(bottom: 24, top: 10),
                       alignment: Alignment.center,
-                      child: Text('$quantidade ${widget.moeda.sigla}',
+                      child: Text('$quantidademoeda ${widget.moeda.sigla}',
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.w700,
@@ -106,9 +109,9 @@ class _MoedasDetalhesPageState extends State<MoedasDetalhesPage> {
                 maxLength: 8,
                 onChanged: ((value) {
                   setState(() {
-                    quantidade = value.isEmpty
+                    quantidademoeda = value.isEmpty
                         ? 0
-                        : quantidade = double.parse(value) / widget.moeda.preco;
+                        : quantidademoeda = double.parse(value) / widget.moeda.preco;
                   });
                 }),
                 controller: _valor,
